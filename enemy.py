@@ -1,92 +1,156 @@
 import pygame
-from constants import *
+from constants import (DIRECTION_L,DIRECTION_R,WIDTH_ENEMY,HIGH_ENEMY,DEBUG)
 from auxiliar import Auxiliar  
 from bullet import Bullet
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, x, y, x_limit_left, x_limit_right,speed,frame_animacion_rate_ms,frame_movimiento_rate_ms):
+    def __init__(self,pos_x,pos_y,left_limit_x,right_limit_x,speed_walk,life,frame_animation_rate_ms,frame_motion_rate_ms):
         super().__init__()
-        self.walk_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\player\walk.png", 9, 1)
-        self.walk_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\player\walk.png", 9, 1, True)
-        self.attack_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png", 6, 1)
-        self.attack_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png", 6, 1, True)
-        self.frame = 0
-        self.animation = self.walk_r
-        self.image = self.animation[self.frame]
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        self.x_limit_left = x_limit_left
-        self.x_limit_right = x_limit_right
-        self.speed = speed
-        self.direction = DIRECTION_R # 1 para derecha, -1 para izquierda
-        self.tiempo_transcurrido_animacion = 0
-        self.frame_animacion_rate_ms = frame_animacion_rate_ms
-        self.tiempo_transcurrido_movimiento = 0
-        self.frame_movimiento_rate_ms = frame_movimiento_rate_ms
-        self.bullet_group = pygame.sprite.Group()
-        self.time_bullet = 0
-        self.time_bullet_rate_ms = 1500
+        self.__shoot_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png",6,1,HIGH_ENEMY,WIDTH_ENEMY)
+        self.__shoot_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png",6,1,HIGH_ENEMY,WIDTH_ENEMY,True)
+        self.__death_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\death.png",6,1,HIGH_ENEMY,WIDTH_ENEMY)
+        self.__death_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\death.png",6,1,HIGH_ENEMY,WIDTH_ENEMY,True)
+        self.__frame = 0
+        self.__animation = self.__shoot_l
+        self.__image = self.__animation[self.__frame]
+        self.__rect = self.__image.get_rect()
+
+        self.__rect.x = pos_x
+        self.__rect.y = pos_y
+        self.__left_limit_x = left_limit_x
+        self.__right_limit_x = right_limit_x
+        self.__speed_walk = speed_walk
+        self.__direction = DIRECTION_L
+
+        self.__life = life
+        self.__flag_life = True
+        self.__flag_shoot = True
+        self.__radius = 20
+
+        self.__time_elapsed_animation = 0 #tiempo transcurrdio animation
+        self.__frame_animation_rate_ms = frame_animation_rate_ms
+        self.__time_elapsed_motion = 0
+        self.__frame_motion_rate_ms = frame_motion_rate_ms
+        
+        self.__bullet_group = pygame.sprite.Group()
+        self.__time_bullet = 0
+        self.__time_bullet_rate_ms = 2500
+    
+
+    @property
+    def rect(self):
+        return self.__rect
+    
+    @property
+    def life(self):
+        return self.__life
+    
+    @life.setter
+    def life(self, life):
+        self.__life = life
+    
+    @property
+    def flag_life(self):
+        return self.__flag_life
+    
+    @property
+    def bullet_group(self):
+        return self.__bullet_group
+    
+    # @property
+    # def radius(self):
+    #     return self.__radius
+    
+   
+    @property
+    def animation(self):
+        return self.__animation
+    
+    @animation.setter
+    def animation(self, animation):
+        self.__animation = animation
+        
 
     def cooldown_ready_to_action(self):
         curent_time = pygame.time.get_ticks()
-        return curent_time - self.time_bullet >= self.time_bullet_rate_ms
+        return curent_time - self.__time_bullet >= self.__time_bullet_rate_ms
     
-    def shoot_bullet(self):
-        self.create_bullet()
-        self.time_bullet = pygame.time.get_ticks()
-
-        if self.animation != self.attack_l and self.animation != self.attack_r:
-            if self.direction == DIRECTION_R:
-                self.animation = self.attack_r
-            else:
-                self.animation = self.attack_l
-
-
-    def atacar(self):
-        if self.rect.right > self.x_limit_right:
-            self.animation = self.attack_l
-            self.direction = DIRECTION_L
-        elif self.rect.left < self.x_limit_left:
-              self.animation = self.attack_r
-              self.direction = DIRECTION_R
-        self.create_bullet()
         
     def create_bullet(self):
-        if self.direction == DIRECTION_R:
-            bullet_direction = DIRECTION_L
-        else:
+        if self.__direction == DIRECTION_L:
             bullet_direction = DIRECTION_R
-        bullet = Bullet(self.rect.centerx, self.rect.centery, bullet_direction)
-        return self.bullet_group.add(bullet)
+        else:
+            bullet_direction = DIRECTION_L
+        bullet = Bullet(self.__rect.centerx, self.__rect.centery, bullet_direction, r"assets\graphics\enemy\bullet_enemy.png")
+        return self.__bullet_group.add(bullet)
 
-    def animacion(self,delta_ms):
-        self.tiempo_transcurrido_animacion += delta_ms
-        if self.tiempo_transcurrido_animacion >= self.frame_animacion_rate_ms:
-            self.tiempo_transcurrido_animacion = 0
 
-            if self.frame < len(self.animation) - 1:
-                self.frame += 1
-            else:
-                self.frame = 0
+    def shoot(self):
+            if self.__flag_shoot:
+                if self.__rect.right > self.__right_limit_x:
+                    self.__animation = self.__shoot_l
+                    self.__direction = DIRECTION_L
+                elif self.__rect.left < self.__left_limit_x:
+                    self.__animation = self.__shoot_r
+                    self.__direction = DIRECTION_R
+
+                if self.cooldown_ready_to_action():
+                    self.create_bullet()
+                    self.__time_bullet = pygame.time.get_ticks()
 
     
-    def movimiento(self, delta_ms):
-        self.tiempo_transcurrido_movimiento += delta_ms
-        if self.tiempo_transcurrido_movimiento >= self.frame_movimiento_rate_ms:
-            self.tiempo_transcurrido_movimiento = 0
-            self.rect.x += self.speed * self.direction
+    def death(self):
+        if self.__life > 0:
+            self.__life -= 1
+        else:
+            if self.__direction == DIRECTION_R:
+                self.__animation = self.__death_r
+            else:
+                self.__animation = self.__death_l
+            self.__flag_shoot = False
+            self.__flag_life = False
+            self.__speed_walk = 0 
+        
+
+    def animations(self,delta_ms):
+        self.__time_elapsed_animation += delta_ms
+        if self.__time_elapsed_animation >= self.__frame_animation_rate_ms:
+            self.__time_elapsed_animation = 0
+            if self.__flag_life:
+                if self.__frame < len(self.__animation) - 1:
+                    self.__frame += 1
+                else:
+                    self.__frame = 0
+            else:
+                if self.__frame < len(self.__animation) - 1:
+                    self.__frame += 1
+            
+
+    
+    def motion(self, delta_ms):
+        self.__time_elapsed_motion += delta_ms
+        if self.__time_elapsed_motion >= self.__frame_motion_rate_ms:
+            self.__time_elapsed_motion = 0
+            self.__rect.x += self.__speed_walk * self.__direction
+        
+
             
     def update(self,delta_ms,screen):
-        self.movimiento(delta_ms)
-        self.animacion(delta_ms)
-        self.atacar()
-        self.shoot_bullet()
-        self.bullet_group.update()
-        self.bullet_group.draw(screen)
+        self.motion(delta_ms)
+        self.animations(delta_ms)
+        self.__bullet_group.update()
+        self.__bullet_group.draw(screen)
+        self.shoot()
         
         
+           
     def draw(self, screen):
-        self.image = self.animation[self.frame]
-        screen.blit(self.image, self.rect)
+        if DEBUG:
+            pygame.draw.rect(screen,(255,0,0),self.__rect)
+            pygame.draw.circle(screen, (0, 0, 255), self.__rect.center,self.__radius)
+        self.__image = self.__animation[self.__frame]
+        screen.blit(self.__image,self.__rect)
+        
+        
+       
         

@@ -3,7 +3,7 @@ from constants import *
 
 class Auxiliar:
     @staticmethod
-    def getSurfaceFromSpriteSheet(path,columnas,filas,flip=False):
+    def getSurfaceFromSpriteSheet(path,columnas,filas,alto_personaje,ancho_personaje,flip=False):
         lista = []
         surface_imagen = pygame.image.load(path)
         fotograma_ancho = int(surface_imagen.get_width()/columnas)
@@ -14,7 +14,7 @@ class Auxiliar:
                 x = columna * fotograma_ancho
                 y = fila * fotograma_alto
                 surface_fotograma = surface_imagen.subsurface(x,y,fotograma_ancho,fotograma_alto)
-                surface_fotograma = pygame.transform.scale(surface_fotograma,(ALTO_PERSONAJE,ANCHO_PERSONAJE))
+                surface_fotograma = pygame.transform.scale(surface_fotograma,(alto_personaje,ancho_personaje))
                 if flip:
                     surface_fotograma = pygame.transform.flip(surface_fotograma,True,False)
                 lista.append(surface_fotograma)
