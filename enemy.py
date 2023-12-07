@@ -1,11 +1,12 @@
 import pygame
-from constants import (DIRECTION_L,DIRECTION_R,WIDTH_ENEMY,HIGH_ENEMY,DEBUG)
+from constants import (DIRECTION_L,DIRECTION_R,WIDTH_ENEMY,HIGH_ENEMY,DEBUG,open_configs)
 from auxiliar import Auxiliar  
 from bullet import Bullet
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,pos_x,pos_y,left_limit_x,right_limit_x,speed_walk,life,frame_animation_rate_ms,frame_motion_rate_ms):
         super().__init__()
+        
         self.__shoot_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png",6,1,HIGH_ENEMY,WIDTH_ENEMY)
         self.__shoot_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png",6,1,HIGH_ENEMY,WIDTH_ENEMY,True)
         self.__death_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\death.png",6,1,HIGH_ENEMY,WIDTH_ENEMY)
@@ -26,7 +27,7 @@ class Enemy(pygame.sprite.Sprite):
         self.__flag_life = True
         self.__flag_shoot = True
         self.__radius = 20
-
+        
         self.__time_elapsed_animation = 0 #tiempo transcurrdio animation
         self.__frame_animation_rate_ms = frame_animation_rate_ms
         self.__time_elapsed_motion = 0
@@ -56,11 +57,6 @@ class Enemy(pygame.sprite.Sprite):
     @property
     def bullet_group(self):
         return self.__bullet_group
-    
-    # @property
-    # def radius(self):
-    #     return self.__radius
-    
    
     @property
     def animation(self):
@@ -111,7 +107,6 @@ class Enemy(pygame.sprite.Sprite):
             self.__flag_life = False
             self.__speed_walk = 0 
         
-
     def animations(self,delta_ms):
         self.__time_elapsed_animation += delta_ms
         if self.__time_elapsed_animation >= self.__frame_animation_rate_ms:

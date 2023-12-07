@@ -76,10 +76,6 @@ class Player(pygame.sprite.Sprite):
     def bullet_group(self):
         return self.__bullet_group
     
-    # @property
-    # def radius(self):
-    #     return self.__radius
-    
     @property
     def animation(self):
         return self.__animation

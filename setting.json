@@ -1,121 +1,219 @@
 {
     "stage_1": {
+        "background_img":"assets/graphics/background/background_stage_1.jpg",
+
+        "player": {
+            "player_img": "",
+            "player_speed": 4,
+            "gravity": 1,
+            "Y_speed": 20,
+            "life":3,
+            "frame_animation_rate_ms": 80,
+            "frame_motion_rate_ms": 20,
+            "coord_player":
+                {
+                    "pos_x": 0,
+                    "pos_y": 385
+                } 
+        },
+
         "enemy": {
             "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
             "enemy_img_death":"./assets/graphics/enemy/death.png",
-            "max_enemy_speed": 55,
-            "min_enemy_speed": 10,
-            "percentaje_shoot": 100
-        },
-        
-        "player": {
-            "player_img": "./assets/graphics/player.png"
-        },
-        "stage": {
-            "max_amount_enemies": 3,
-            "coords_enemies": [
+            "enemy_speed": 3,
+            "left_limit_x":0,
+            "right_limit_x":1300,
+            "life": 3,
+            "frame_animation_rate_ms":80,
+            "frame_motion_rate_ms":30,
+            "max_enemies": 3,
+            "coord_enemies":[
                 {
-                    "coord_x": 50,
-                    "coord_y": 150
+                    "coord_x": 600,
+                    "coord_y": 355
                 },
                 {
-                    "coord_x": 200,
-                    "coord_y": 80
+                    "coord_x": 1000,
+                    "coord_y": 355
                 },
                 {
-                    "coord_x": 400,
-                    "coord_y": 20
+                    "coord_x": 1500,
+                    "coord_y": 355
                 }
             ]
+        },
+
+        "score":{
+            "coord_score":[
+                {
+                    "pos_x":400,
+                    "pos_y":250
+                },
+                {
+                    "pos_x":700,
+                    "pos_y":220
+                },{
+                    "pos_x":1000,
+                    "pos_y":250
+                }
+            ]    
+        },
+
+        "life":{
+            "coord_life":[
+                {
+                    "pos_x":1200,
+                    "pos_y":290
+                }
+            ]    
         }
     },
     "stage_2": {
-        "enemy": {
-            "enemy_img": "./assets/graphics/{0}.png",
-            "max_enemy_speed": 10,
-            "min_enemy_speed": 4,
-            "percentaje_shoot": 10
-        },
-        
+        "background_img":"assets/graphics/background/background_stage_2.png",
+
         "player": {
-            "player_img": "./assets/graphics/player.png"
+            "player_img": "",
+            "player_speed": 4,
+            "gravity": 1,
+            "Y_speed": 20,
+            "life":3,
+            "frame_animation_rate_ms": 80,
+            "frame_motion_rate_ms": 20,
+            "coord_player":
+                {
+                    "pos_x": 0,
+                    "pos_y": 405
+                } 
+            
         },
-        "stage": {
-            "max_amount_enemies": 15,
-            "coords_enemies": [
+
+        "enemy": {
+            "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
+            "enemy_img_death":"./assets/graphics/enemy/death.png",
+            "enemy_speed": 3,
+            "left_limit_x":0,
+            "right_limit_x":1300,
+            "life": 3,
+            "frame_animation_rate_ms":80,
+            "frame_motion_rate_ms":30,
+            "max_enemies": 3,
+            "coord_enemies":[
                 {
-                    "coord_x": 10,
-                    "coord_y": 150
+                    "coord_x": 600,
+                    "coord_y": 380
                 },
                 {
-                    "coord_x": 40,
-                    "coord_y": 80
+                    "coord_x": 1000,
+                    "coord_y": 380
                 },
                 {
-                    "coord_x": 70,
-                    "coord_y": 20
-                },
-                {
-                    "coord_x": 100,
-                    "coord_y": 150
-                },
-                {
-                    "coord_x": 130,
-                    "coord_y": 80
-                },
-                {
-                    "coord_x": 160,
-                    "coord_y": 20
-                },
-                {
-                    "coord_x": 190,
-                    "coord_y": 150
-                },
-                {
-                    "coord_x": 220,
-                    "coord_y": 80
-                },
-                {
-                    "coord_x": 250,
-                    "coord_y": 20
-                },
-                {
-                    "coord_x": 280,
-                    "coord_y": 150
-                },
-                {
-                    "coord_x": 310,
-                    "coord_y": 80
-                },
-                {
-                    "coord_x": 340,
-                    "coord_y": 20
-                },
-                {
-                    "coord_x": 50,
-                    "coord_y": 150
-                },
-                {
-                    "coord_x": 200,
-                    "coord_y": 80
-                },
-                {
-                    "coord_x": 400,
-                    "coord_y": 20
-                },
-                {
-                    "coord_x": 50,
-                    "coord_y": 150
-                },
-                {
-                    "coord_x": 200,
-                    "coord_y": 80
-                },
-                {
-                    "coord_x": 400,
-                    "coord_y": 20
+                    "coord_x": 1500,
+                    "coord_y": 380
                 }
             ]
+        },
+
+        "score":{
+            "coord_score":[
+                {
+                    "pos_x":300,
+                    "pos_y":250
+                },
+                {
+                    "pos_x":600,
+                    "pos_y":250
+                },{
+                    "pos_x":1000,
+                    "pos_y":250
+                }
+            ]    
+        },
+
+        "life":{
+            "coord_life":[
+                {
+                    "pos_x":1200,
+                    "pos_y":290
+                }
+            ]    
+        }
+    },
+
+    "stage_3": {
+        "background_img":"assets/graphics/background/background_stage_3.png",
+
+        "player": {
+            "player_img": "",
+            "player_speed": 4,
+            "gravity": 1,
+            "Y_speed": 20,
+            "life":3,
+            "frame_animation_rate_ms": 80,
+            "frame_motion_rate_ms": 20,
+            "coord_player":
+                {
+                    "pos_x": 600,
+                    "pos_y": 355
+                } 
+            
+        },
+
+        "enemy": {
+            "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
+            "enemy_img_death":"./assets/graphics/enemy/death.png",
+            "enemy_speed": 3,
+            "left_limit_x":0,
+            "right_limit_x":1500,
+            "life": 3,
+            "frame_animation_rate_ms":80,
+            "frame_motion_rate_ms":30,
+            "max_enemies": 3,
+            "coord_enemies":[
+                {
+                    "coord_x": 600,
+                    "coord_y": 475
+                },
+                {
+                    "coord_x": 1000,
+                    "coord_y": 475
+                },
+                {
+                    "coord_x": 1500,
+                    "coord_y": 380
+                }
+            ]
+        },
+
+        "score":{
+            "coord_score":[
+                {
+                    "pos_x":500,
+                    "pos_y":30
+                },
+                {
+                    "pos_x":1000,
+                    "pos_y":30
+                },{
+                    "pos_x":1300,
+                    "pos_y":30
+                }
+            ]    
+        },
+
+        "life":{
+            "coord_life":[
+                {
+                    "pos_x":500,
+                    "pos_y":30
+                },
+                {
+                    "pos_x":1000,
+                    "pos_y":30
+                },{
+                    "pos_x":1300,
+                    "pos_y":30
+                }
+            ]    
         }
     }
 }

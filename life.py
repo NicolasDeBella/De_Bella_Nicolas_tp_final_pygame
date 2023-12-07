@@ -5,7 +5,7 @@ from constants import (DEBUG,HIGH_LIFE,WIDTH_LIFE)
 class Life(pygame.sprite.Sprite):
     def __init__(self,pos_x,pos_y):
         super().__init__()
-        self.__life = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\life\life.jpg",13,1,HIGH_LIFE,WIDTH_LIFE)
+        self.__life = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\life\life.png",6,2,HIGH_LIFE,WIDTH_LIFE)
         self.__frame = 0
         self.__animation = self.__life
         self.__image = self.__animation[self.__frame]
