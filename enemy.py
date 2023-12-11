@@ -65,6 +65,11 @@ class Enemy(pygame.sprite.Sprite):
     @animation.setter
     def animation(self, animation):
         self.__animation = animation
+    
+    @property
+    def radius(self):
+        return self.__radius
+    
         
 
     def cooldown_ready_to_action(self):
@@ -94,7 +99,7 @@ class Enemy(pygame.sprite.Sprite):
                     self.create_bullet()
                     self.__time_bullet = pygame.time.get_ticks()
 
-    
+
     def death(self):
         if self.__life > 0:
             self.__life -= 1
@@ -106,7 +111,8 @@ class Enemy(pygame.sprite.Sprite):
             self.__flag_shoot = False
             self.__flag_life = False
             self.__speed_walk = 0 
-        
+
+
     def animations(self,delta_ms):
         self.__time_elapsed_animation += delta_ms
         if self.__time_elapsed_animation >= self.__frame_animation_rate_ms:

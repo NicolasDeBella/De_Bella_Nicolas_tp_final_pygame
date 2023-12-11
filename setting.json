@@ -5,15 +5,17 @@
         "player": {
             "player_img": "",
             "player_speed": 4,
-            "gravity": 1,
-            "Y_speed": 20,
+            "gravity": 10,
+            "jump_power": 60,
+            "jump_height": 190,
             "life":3,
+            "ground_gravity": 380,
             "frame_animation_rate_ms": 80,
             "frame_motion_rate_ms": 20,
             "coord_player":
                 {
                     "pos_x": 0,
-                    "pos_y": 385
+                    "pos_y": 380
                 } 
         },
 
@@ -21,24 +23,36 @@
             "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
             "enemy_img_death":"./assets/graphics/enemy/death.png",
             "enemy_speed": 3,
-            "left_limit_x":0,
-            "right_limit_x":1300,
             "life": 3,
             "frame_animation_rate_ms":80,
             "frame_motion_rate_ms":30,
-            "max_enemies": 3,
             "coord_enemies":[
                 {
                     "coord_x": 600,
-                    "coord_y": 355
+                    "coord_y": 340
                 },
                 {
                     "coord_x": 1000,
-                    "coord_y": 355
+                    "coord_y": 340
                 },
                 {
                     "coord_x": 1500,
-                    "coord_y": 355
+                    "coord_y": 340
+                }
+            ],
+
+            "coord_x_limits":[
+                {
+                    "left_limit_x":0, 
+                    "right_limit_x":1300
+                },
+                {
+                    "left_limit_x":0, 
+                    "right_limit_x":1300
+                },
+                {
+                    "left_limit_x":0, 
+                    "right_limit_x":1300
                 }
             ]
         },
@@ -68,47 +82,177 @@
             ]    
         }
     },
+
     "stage_2": {
         "background_img":"assets/graphics/background/background_stage_2.png",
 
         "player": {
             "player_img": "",
             "player_speed": 4,
-            "gravity": 1,
-            "Y_speed": 20,
+            "gravity": 10,
+            "jump_power": 60,
+            "jump_height": 100,
             "life":3,
+            "ground_gravity": 385,
             "frame_animation_rate_ms": 80,
             "frame_motion_rate_ms": 20,
             "coord_player":
                 {
                     "pos_x": 0,
-                    "pos_y": 405
+                    "pos_y": 385
                 } 
-            
         },
 
         "enemy": {
             "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
             "enemy_img_death":"./assets/graphics/enemy/death.png",
             "enemy_speed": 3,
-            "left_limit_x":0,
-            "right_limit_x":1300,
             "life": 3,
             "frame_animation_rate_ms":80,
             "frame_motion_rate_ms":30,
-            "max_enemies": 3,
             "coord_enemies":[
                 {
-                    "coord_x": 600,
-                    "coord_y": 380
+                    "coord_x": 320,
+                    "coord_y": 155
                 },
                 {
-                    "coord_x": 1000,
-                    "coord_y": 380
+                    "coord_x": 1200,
+                    "coord_y": 155
                 },
                 {
-                    "coord_x": 1500,
-                    "coord_y": 380
+                    "coord_x": 1200,
+                    "coord_y": 350
+                }
+            ],
+
+            "coord_x_limits":[
+                {
+                    "left_limit_x":0, 
+                    "right_limit_x":420
+                },
+                {
+                    "left_limit_x":865, 
+                    "right_limit_x":1300
+                },
+                {
+                    "left_limit_x":0, 
+                    "right_limit_x":1300
+                }
+            ]
+        },
+
+        "platform":{
+            "coord_platform":[
+                {
+                    "pos_x":0,
+                    "pos_y":255
+                },
+                {
+                    "pos_x":900,
+                    "pos_y":255
+                },
+                {
+                    "pos_x":550,
+                    "pos_y":160
+                }
+            ],
+            "size_platform":[
+                {
+                    "high":400,
+                    "width":70
+                },
+                {
+                    "high":400,
+                    "width":70
+                },
+                {
+                    "high":200,
+                    "width":70
+                }
+            ]
+        },
+
+        "score":{
+            "coord_score":[
+                {
+                    "pos_x":60,
+                    "pos_y":90
+                },
+                {
+                    "pos_x":260,
+                    "pos_y":90
+                },
+                {
+                    "pos_x":1010,
+                    "pos_y":90
+                },
+                {
+                    "pos_x":1200,
+                    "pos_y":90
+                }
+            ]    
+        },
+
+        "life":{
+            "coord_life":[
+                {
+                    "pos_x":630,
+                    "pos_y":90
+                }
+            ]    
+        },
+        "trap":{
+            "coord_trap":[
+                {
+                    "pos_x":150,
+                    "pos_y":210
+                },
+                {
+                    "pos_x":1100,   
+                    "pos_y":210
+                }
+            ]
+        }
+    },
+
+    "stage_3": {
+        "background_img":"assets/graphics/background/background_stage_3.png",
+
+        "player": {
+            "player_img": "",
+            "player_speed": 4,
+            "gravity": 10,
+            "jump_power": 60,
+            "jump_height": 250,
+            "life":3,
+            "ground_gravity": 400,
+            "frame_animation_rate_ms": 80,
+            "frame_motion_rate_ms": 20,
+            "coord_player":
+                {
+                    "pos_x": 0,
+                    "pos_y": 400
+                } 
+        },
+
+        "enemy": {
+            "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
+            "enemy_img_death":"./assets/graphics/enemy/death.png",
+            "enemy_speed": 3,
+            "life": 3,
+            "frame_animation_rate_ms":80,
+            "frame_motion_rate_ms":30,
+            "coord_enemies":[
+                {
+                    "coord_x": 1200,
+                    "coord_y": 375
+                }
+            ],
+
+            "coord_x_limits":[
+                {
+                    "left_limit_x":0, 
+                    "right_limit_x":1300
                 }
             ]
         },
@@ -120,9 +264,6 @@
                     "pos_y":250
                 },
                 {
-                    "pos_x":600,
-                    "pos_y":250
-                },{
                     "pos_x":1000,
                     "pos_y":250
                 }
@@ -132,88 +273,23 @@
         "life":{
             "coord_life":[
                 {
-                    "pos_x":1200,
+                    "pos_x":620,
                     "pos_y":290
                 }
             ]    
-        }
-    },
-
-    "stage_3": {
-        "background_img":"assets/graphics/background/background_stage_3.png",
-
-        "player": {
-            "player_img": "",
-            "player_speed": 4,
-            "gravity": 1,
-            "Y_speed": 20,
-            "life":3,
-            "frame_animation_rate_ms": 80,
-            "frame_motion_rate_ms": 20,
-            "coord_player":
-                {
-                    "pos_x": 600,
-                    "pos_y": 355
-                } 
-            
         },
 
-        "enemy": {
-            "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
-            "enemy_img_death":"./assets/graphics/enemy/death.png",
-            "enemy_speed": 3,
-            "left_limit_x":0,
-            "right_limit_x":1500,
-            "life": 3,
-            "frame_animation_rate_ms":80,
-            "frame_motion_rate_ms":30,
-            "max_enemies": 3,
-            "coord_enemies":[
+        "trap":{
+            "coord_trap":[
                 {
-                    "coord_x": 600,
-                    "coord_y": 475
+                    "pos_x":300,
+                    "pos_y":420
                 },
                 {
-                    "coord_x": 1000,
-                    "coord_y": 475
-                },
-                {
-                    "coord_x": 1500,
-                    "coord_y": 380
+                    "pos_x":1000,   
+                    "pos_y":420
                 }
             ]
-        },
-
-        "score":{
-            "coord_score":[
-                {
-                    "pos_x":500,
-                    "pos_y":30
-                },
-                {
-                    "pos_x":1000,
-                    "pos_y":30
-                },{
-                    "pos_x":1300,
-                    "pos_y":30
-                }
-            ]    
-        },
-
-        "life":{
-            "coord_life":[
-                {
-                    "pos_x":500,
-                    "pos_y":30
-                },
-                {
-                    "pos_x":1000,
-                    "pos_y":30
-                },{
-                    "pos_x":1300,
-                    "pos_y":30
-                }
-            ]    
         }
     }
 }

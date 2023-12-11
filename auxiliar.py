@@ -3,19 +3,19 @@ from constants import *
 
 class Auxiliar:
     @staticmethod
-    def getSurfaceFromSpriteSheet(path,columnas,filas,alto_personaje,ancho_personaje,flip=False):
-        lista = []
-        surface_imagen = pygame.image.load(path)
-        fotograma_ancho = int(surface_imagen.get_width()/columnas)
-        fotograma_alto = int(surface_imagen.get_height()/filas)
+    def getSurfaceFromSpriteSheet(path,columns,rows,high_image,width_image,flip=False):
+        list = []
+        surface_image = pygame.image.load(path)
+        width_frame = int(surface_image.get_width()/columns)
+        high_frame = int(surface_image.get_height()/rows)
        
-        for fila in range(filas):
-            for columna in range(columnas):
-                x = columna * fotograma_ancho
-                y = fila * fotograma_alto
-                surface_fotograma = surface_imagen.subsurface(x,y,fotograma_ancho,fotograma_alto)
-                surface_fotograma = pygame.transform.scale(surface_fotograma,(alto_personaje,ancho_personaje))
+        for row in range(rows):
+            for columns in range(columns):
+                x = columns * width_frame
+                y = row * high_frame
+                surface_frame = surface_image.subsurface(x,y,width_frame,high_frame)
+                surface_frame = pygame.transform.scale(surface_frame,(high_image,width_image))
                 if flip:
-                    surface_fotograma = pygame.transform.flip(surface_fotograma,True,False)
-                lista.append(surface_fotograma)
-        return lista
+                    surface_frame = pygame.transform.flip(surface_frame,True,False)
+                list.append(surface_frame)
+        return list

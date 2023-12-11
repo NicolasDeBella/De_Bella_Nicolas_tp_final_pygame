@@ -1,10 +1,12 @@
 import pygame
-from constants import (DIRECTION_L,DIRECTION_R,WIDTH_PLAYER,HIGH_PLAYER,HIGH_WINDOW,WIDTH_WINDOW,DEBUG)
+from constants import (DIRECTION_L,DIRECTION_R,WIDTH_PLAYER,HIGH_PLAYER,HIGH_WINDOW,WIDTH_WINDOW,DEBUG,GROUND_RECT_H)
 from auxiliar import Auxiliar
 from bullet import Bullet
+#from stage import platform_group 
+
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos_x,pos_y,speed_walk,gravity,y_speed,life,frame_animacion_rate_ms,frame_movimiento_rate_ms) -> None:
+    def __init__(self,pos_x,pos_y,speed_walk,gravity,jump_power,jump_height,life,ground_gravity,frame_animacion_rate_ms,frame_movimiento_rate_ms) -> None:
         super().__init__()
         self.__still_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\player\still.png", 1, 1, HIGH_PLAYER, WIDTH_PLAYER)
         self.__still_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\player\still.png", 1, 1, HIGH_PLAYER, WIDTH_PLAYER, True)
@@ -31,11 +33,12 @@ class Player(pygame.sprite.Sprite):
         self.__life = life
         self.__flag_life = True
         self.__score = 0
-        self.__y_gravity = gravity
-        self.__jump_height = y_speed
-        self.__y_velocity = y_speed
+        self.__gravity = gravity
+        self.__jump_power = jump_power
+        self.__jump_height = jump_height
         self.__is_jump = False
         self.__radius = 15
+        self.__ground_gravity = ground_gravity
         
         self.__bullet_group = pygame.sprite.Group()
         self.__time_bullet = 0
@@ -46,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         self.__tiempo_transcurrido_movimiento = 0
         self.__frame_movimiento_rate_ms = frame_movimiento_rate_ms
        
-    
+
     @property
     def rect(self):
         return self.__rect
@@ -71,7 +74,6 @@ class Player(pygame.sprite.Sprite):
     def flag_life(self):
         return self.__flag_life
     
-
     @property
     def bullet_group(self):
         return self.__bullet_group
@@ -83,8 +85,18 @@ class Player(pygame.sprite.Sprite):
     @animation.setter
     def animation(self, animation):
         self.__animation = animation
+    
+    @property
+    def radius(self):
+        return self.__radius
 
+    @property
+    def is_collision_platform(self):
+        return self.__is_collision_platform
 
+    
+
+    
     def cooldown_ready_to_action(self):
         curent_time = pygame.time.get_ticks()
         return curent_time - self.__time_bullet >= self.__time_bullet_rate_ms
@@ -96,7 +108,6 @@ class Player(pygame.sprite.Sprite):
             bullet_direction = DIRECTION_R
         bullet = Bullet(self.__rect.centerx, self.__rect.centery, bullet_direction, r"assets\graphics\player\bullet_player.png")
         return self.__bullet_group.add(bullet)
-    
     
     def still(self):
         if self.__animation != self.__still_r and self.__animation != self.__still_l:
@@ -122,14 +133,15 @@ class Player(pygame.sprite.Sprite):
             
     def jump(self):
         self.__is_jump = True
-        if self.__direction == DIRECTION_R:   
+        if self.__direction == DIRECTION_R:
+            self.__move_x = 10
             self.__animation = self.__jump_r
-            self.__move_x = self.__speed_walk
-        else:   
+        else:
+            self.__move_x -= 10
             self.__animation = self.__jump_l
-            self.__move_x = -self.__speed_walk
+        self.__frame = 0
         
-
+        
     def shoot(self):
         if self.__direction == DIRECTION_R:
             self.__animation = self.__shoot_r   
@@ -170,6 +182,7 @@ class Player(pygame.sprite.Sprite):
             if teclas_presionadas[pygame.K_f] and not teclas_presionadas[pygame.K_LEFT] and not teclas_presionadas[pygame.K_RIGHT]:
                 self.shoot()
 
+
     def screen_limits(self):
         if self.__rect.x < 0:
             self.__rect.x = 0
@@ -182,21 +195,42 @@ class Player(pygame.sprite.Sprite):
             self.__rect.y = HIGH_WINDOW - self.__rect.height
     
 
-    def motion(self,delta_ms):
+    def motion(self,delta_ms,platforms_list):
+        self.__rect_ground_collition = pygame.Rect(self.__rect.x + self.__rect.w / 4, (self.__rect.y + self.__rect.h - GROUND_RECT_H),self.__rect.w / 2,GROUND_RECT_H)
         self.__tiempo_transcurrido_movimiento += delta_ms
         if self.__tiempo_transcurrido_movimiento >= self.__frame_movimiento_rate_ms:
             self.__tiempo_transcurrido_movimiento = 0
             self.__rect.x += self.__move_x
             self.__rect.y += self.__move_y
-            
+
+        if not self.is_on_platform(platforms_list):
+            self.__rect.y += self.__gravity
+        
         if self.__is_jump:
-            self.__rect.y -= self.__y_velocity
-            self.__y_velocity -= self.__y_gravity
-            if self.__y_velocity < -self.__jump_height:
+            if self.__rect.y > self.__jump_height:
+                self.__rect.y -= self.__jump_power
                 self.__is_jump = False
-                self.__y_velocity = self.__jump_height
-    
-    
+            
+    @property
+    def rect_ground_collition(self):
+        return self.__rect_ground_collition
+
+    @rect_ground_collition.setter
+    def rect_ground_collition(self, rect_ground_collition):
+        self.__rect_ground_collition = rect_ground_collition
+
+    def is_on_platform(self,platforms_list):
+        retorno = False
+        if self.__rect.y >= self.__ground_gravity:
+            retorno = True
+        else:
+            for platform in platforms_list:
+                if self.__rect_ground_collition.colliderect(platform.rect_ground_collition):
+                    retorno = True
+                    break
+        return retorno
+
+        
     def animations(self,delta_ms):
         self.__tiempo_transcurrido_animacion += delta_ms
         if self.__tiempo_transcurrido_animacion >= self.__frame_animacion_rate_ms:
@@ -211,18 +245,19 @@ class Player(pygame.sprite.Sprite):
                     self.__frame += 1
     
 
-    def update(self,delta_ms,screen):
+    def update(self,delta_ms,screen,platforms_list):
         self.screen_limits()
-        self.motion(delta_ms)
+        self.motion(delta_ms,platforms_list)
         self.animations(delta_ms)
         self.__bullet_group.update()
         self.__bullet_group.draw(screen)
-        
-           
+    
+            
     def draw(self,screen):
         if DEBUG:
             pygame.draw.rect(screen,(255,0,0),self.__rect)
             pygame.draw.circle(screen, (0, 0, 255), self.__rect.center, self.__radius)
+            pygame.draw.rect(screen,(0, 0, 255),self.__rect_ground_collition)
         self.__image = self.__animation[self.__frame]
         screen.blit(self.__image,self.__rect)
     

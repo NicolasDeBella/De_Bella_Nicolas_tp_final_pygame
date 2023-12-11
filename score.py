@@ -19,6 +19,10 @@ class Score(pygame.sprite.Sprite):
     @property
     def rect(self):
         return self.__rect
+
+    @property
+    def radius(self):
+        return self.__radius
     
     def animations(self,delta_ms):
         self.__elapsed_time_animation += delta_ms
