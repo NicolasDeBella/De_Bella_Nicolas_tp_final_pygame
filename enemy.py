@@ -1,16 +1,21 @@
 import pygame
-from constants import (DIRECTION_L,DIRECTION_R,WIDTH_ENEMY,HIGH_ENEMY,DEBUG,open_configs)
+from constants import (DIRECTION_L,DIRECTION_R,WIDTH_ENEMY,HIGH_ENEMY,DEBUG,open_configs,PATH_DISPARO_SOUND)
+from volume import Volume
 from auxiliar import Auxiliar  
 from bullet import Bullet
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self,pos_x,pos_y,left_limit_x,right_limit_x,speed_walk,life,frame_animation_rate_ms,frame_motion_rate_ms):
+    def __init__(self,pos_x,pos_y,left_limit_x,right_limit_x,speed_walk,life,frame_animation_rate_ms,frame_motion_rate_ms,name_stage):
         super().__init__()
-        
-        self.__shoot_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png",6,1,HIGH_ENEMY,WIDTH_ENEMY)
-        self.__shoot_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\atack.png",6,1,HIGH_ENEMY,WIDTH_ENEMY,True)
-        self.__death_r = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\death.png",6,1,HIGH_ENEMY,WIDTH_ENEMY)
-        self.__death_l = Auxiliar.getSurfaceFromSpriteSheet(r"assets\graphics\enemy\death.png",6,1,HIGH_ENEMY,WIDTH_ENEMY,True)
+        self.__configuration = open_configs().get(name_stage)
+        self.__configuration_enemy = self.__configuration.get("enemy")
+        self.__load_image_enemy = self.__configuration_enemy.get("enemy_path_image")
+        self.__shoot =  self.__load_image_enemy[0]
+        self.__death =  self.__load_image_enemy[1]
+        self.__shoot_r = Auxiliar.getSurfaceFromSpriteSheet(self.__shoot["enemy_img_shoot"],self.__shoot["columns"],self.__shoot["rows"],HIGH_ENEMY,WIDTH_ENEMY)
+        self.__shoot_l = Auxiliar.getSurfaceFromSpriteSheet(self.__shoot["enemy_img_shoot"],self.__shoot["columns"],self.__shoot["rows"],HIGH_ENEMY,WIDTH_ENEMY,True)
+        self.__death_r = Auxiliar.getSurfaceFromSpriteSheet(self.__death["enemy_img_death"],self.__death["columns"],self.__death["rows"],HIGH_ENEMY,WIDTH_ENEMY)
+        self.__death_l = Auxiliar.getSurfaceFromSpriteSheet(self.__death["enemy_img_death"],self.__death["columns"],self.__death["rows"],HIGH_ENEMY,WIDTH_ENEMY,True)
         self.__frame = 0
         self.__animation = self.__shoot_l
         self.__image = self.__animation[self.__frame]
@@ -28,7 +33,7 @@ class Enemy(pygame.sprite.Sprite):
         self.__flag_shoot = True
         self.__radius = 20
         
-        self.__time_elapsed_animation = 0 #tiempo transcurrdio animation
+        self.__time_elapsed_animation = 0 
         self.__frame_animation_rate_ms = frame_animation_rate_ms
         self.__time_elapsed_motion = 0
         self.__frame_motion_rate_ms = frame_motion_rate_ms
@@ -70,8 +75,11 @@ class Enemy(pygame.sprite.Sprite):
     def radius(self):
         return self.__radius
     
-        
-
+    def sound_disparo(self):
+        self.__disparo = Volume(PATH_DISPARO_SOUND)
+        self.__disparo.play_sound()
+    
+    
     def cooldown_ready_to_action(self):
         curent_time = pygame.time.get_ticks()
         return curent_time - self.__time_bullet >= self.__time_bullet_rate_ms
@@ -82,12 +90,13 @@ class Enemy(pygame.sprite.Sprite):
             bullet_direction = DIRECTION_R
         else:
             bullet_direction = DIRECTION_L
-        bullet = Bullet(self.__rect.centerx, self.__rect.centery, bullet_direction, r"assets\graphics\enemy\bullet_enemy.png")
+        bullet = Bullet(self.__rect.centerx, self.__rect.centery, bullet_direction, r"assets\graphics\enemy\bullet\bullet_enemy.png")
         return self.__bullet_group.add(bullet)
 
 
     def shoot(self):
             if self.__flag_shoot:
+                #self.sound_disparo()
                 if self.__rect.right > self.__right_limit_x:
                     self.__animation = self.__shoot_l
                     self.__direction = DIRECTION_L

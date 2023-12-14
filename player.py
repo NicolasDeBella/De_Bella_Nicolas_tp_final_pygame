@@ -1,8 +1,7 @@
 import pygame
-from constants import (DIRECTION_L,DIRECTION_R,WIDTH_PLAYER,HIGH_PLAYER,HIGH_WINDOW,WIDTH_WINDOW,DEBUG,GROUND_RECT_H)
+from constants import (DIRECTION_L,DIRECTION_R,WIDTH_PLAYER,HIGH_PLAYER,HIGH_WINDOW,WIDTH_WINDOW,DEBUG,GROUND_RECT_H,PATH_DISPARO_SOUND)
 from auxiliar import Auxiliar
 from bullet import Bullet
-#from stage import platform_group 
 
 
 class Player(pygame.sprite.Sprite):
@@ -48,6 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.__frame_animacion_rate_ms = frame_animacion_rate_ms
         self.__tiempo_transcurrido_movimiento = 0
         self.__frame_movimiento_rate_ms = frame_movimiento_rate_ms
+        self.__disparo = pygame.mixer.Sound(PATH_DISPARO_SOUND)
        
 
     @property
@@ -94,9 +94,19 @@ class Player(pygame.sprite.Sprite):
     def is_collision_platform(self):
         return self.__is_collision_platform
 
+    @property
+    def rect_ground_collition(self):
+        return self.__rect_ground_collition
+
+    @rect_ground_collition.setter
+    def rect_ground_collition(self, rect_ground_collition):
+        self.__rect_ground_collition = rect_ground_collition
+
+    @property
+    def direction(self):
+        return self.__direction
     
 
-    
     def cooldown_ready_to_action(self):
         curent_time = pygame.time.get_ticks()
         return curent_time - self.__time_bullet >= self.__time_bullet_rate_ms
@@ -180,6 +190,7 @@ class Player(pygame.sprite.Sprite):
             if teclas_presionadas[pygame.K_SPACE]:
                 self.jump()
             if teclas_presionadas[pygame.K_f] and not teclas_presionadas[pygame.K_LEFT] and not teclas_presionadas[pygame.K_RIGHT]:
+                #self.__disparo.play()
                 self.shoot()
 
 
@@ -211,13 +222,6 @@ class Player(pygame.sprite.Sprite):
                 self.__rect.y -= self.__jump_power
                 self.__is_jump = False
             
-    @property
-    def rect_ground_collition(self):
-        return self.__rect_ground_collition
-
-    @rect_ground_collition.setter
-    def rect_ground_collition(self, rect_ground_collition):
-        self.__rect_ground_collition = rect_ground_collition
 
     def is_on_platform(self,platforms_list):
         retorno = False

@@ -3,7 +3,6 @@
         "background_img":"assets/graphics/background/background_stage_1.jpg",
 
         "player": {
-            "player_img": "",
             "player_speed": 4,
             "gravity": 10,
             "jump_power": 60,
@@ -20,8 +19,18 @@
         },
 
         "enemy": {
-            "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
-            "enemy_img_death":"./assets/graphics/enemy/death.png",
+            "enemy_path_image":[
+                {
+                    "enemy_img_shoot":"assets/graphics/enemy/strong_soldier/atack.png",
+                    "columns":6,
+                    "rows":1
+                },
+                {
+                    "enemy_img_death":"assets/graphics/enemy/strong_soldier/death.png",
+                    "columns":6,
+                    "rows":1
+                }
+            ],
             "enemy_speed": 3,
             "life": 3,
             "frame_animation_rate_ms":80,
@@ -87,7 +96,6 @@
         "background_img":"assets/graphics/background/background_stage_2.png",
 
         "player": {
-            "player_img": "",
             "player_speed": 4,
             "gravity": 10,
             "jump_power": 60,
@@ -104,8 +112,18 @@
         },
 
         "enemy": {
-            "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
-            "enemy_img_death":"./assets/graphics/enemy/death.png",
+            "enemy_path_image":[
+                {
+                    "enemy_img_shoot":"assets/graphics/enemy/strong_soldier/atack.png",
+                    "columns":6,
+                    "rows":1
+                },
+                {
+                    "enemy_img_death":"assets/graphics/enemy/strong_soldier/death.png",
+                    "columns":6,
+                    "rows":1
+                }
+            ],
             "enemy_speed": 3,
             "life": 3,
             "frame_animation_rate_ms":80,
@@ -219,7 +237,6 @@
         "background_img":"assets/graphics/background/background_stage_3.png",
 
         "player": {
-            "player_img": "",
             "player_speed": 4,
             "gravity": 10,
             "jump_power": 60,
@@ -236,8 +253,18 @@
         },
 
         "enemy": {
-            "enemy_img_shoot":"./assets/graphics/enemy/atack.png",
-            "enemy_img_death":"./assets/graphics/enemy/death.png",
+            "enemy_path_image":[
+                {
+                    "enemy_img_shoot":"assets/graphics/enemy/tank/enemy_tank_drive.png",
+                    "columns":14,
+                    "rows":1
+                },
+                {
+                    "enemy_img_death":"assets/graphics/enemy/tank/enemy_tank_death.png",
+                    "columns":9,
+                    "rows":1
+                }
+            ],
             "enemy_speed": 3,
             "life": 3,
             "frame_animation_rate_ms":80,
@@ -245,7 +272,7 @@
             "coord_enemies":[
                 {
                     "coord_x": 1200,
-                    "coord_y": 375
+                    "coord_y": 385
                 }
             ],
 

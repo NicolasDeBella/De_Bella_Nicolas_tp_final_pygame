@@ -5,12 +5,12 @@ from score import Score
 from life import Life
 from trap import Trap
 from plataforma import Platform
-from constants import (open_configs,WIDTH_WINDOW,HIGH_WINDOW)
+from constants import (open_configs,WIDTH_WINDOW,HIGH_WINDOW,DIRECTION_R,PATH_COLLISION_SOUND,PATH_METAL_SLUG_SCREAM_SOUND)
 
 
 class Stage:
     def __init__(self,screen: pygame.surface.Surface,stage:str):
-        
+        self.__stage = stage
         self.__configuration = open_configs().get(stage)
         self.__screen = screen
         self.__background = self.__configuration.get("background_img")
@@ -49,12 +49,18 @@ class Stage:
 
         self.__platform_group = pygame.sprite.Group()
 
+        self.__collision_sound = pygame.mixer.Sound(PATH_COLLISION_SOUND)
+        self.__scream_sound = pygame.mixer.Sound(PATH_METAL_SLUG_SCREAM_SOUND)
+
         self.generate_enemies()
         self.generate_score()
         self.generate_life()
         self.generator_trap()
         self.generator_platform()
 
+    @property
+    def score_counter(self):
+        return self.__score_counter
 
     @property
     def flag_enemies_eliminate(self):
@@ -63,7 +69,8 @@ class Stage:
     @flag_enemies_eliminate.setter
     def flag_enemies_eliminate(self, flag_enemies_eliminate):
         self.__flag_enemies_eliminate = flag_enemies_eliminate
-    
+
+
     def generate_background(self):
         self.__background_image = pygame.image.load(self.__background)
         self.__background_image = pygame.transform.scale(self.__background_image, (WIDTH_WINDOW, HIGH_WINDOW))
@@ -79,7 +86,8 @@ class Stage:
                 speed_walk = self.__enemy_configuration.get("enemy_speed"),
                 life = self.__enemy_configuration.get("life"),
                 frame_animation_rate_ms = self.__enemy_configuration.get("frame_animation_rate_ms"),
-                frame_motion_rate_ms = self.__enemy_configuration.get("frame_motion_rate_ms")
+                frame_motion_rate_ms = self.__enemy_configuration.get("frame_motion_rate_ms"),
+                name_stage=self.__stage
             )
             self.__enemies_group.add(enemy)
             
@@ -127,24 +135,22 @@ class Stage:
     def collision_between_player_and_score(self):
             collision_score = pygame.sprite.spritecollide(self.player,self.__score_group,True,pygame.sprite.collide_circle)
             if collision_score:
+                self.__collision_sound.play()
                 self.player.score += 500
-    
+            
+
     def collision_between_player_and_life(self):
             collision_life = pygame.sprite.spritecollide(self.player,self.__life_group,True,pygame.sprite.collide_circle)
             if collision_life:
+                self.__collision_sound.play()
                 self.player.life += 1
+                
     
     def collision_between_player_and_trap(self):
-            collision_trap = pygame.sprite.spritecollide(self.player,self.__trap_group,True,pygame.sprite.collide_circle)
+            collision_trap = pygame.sprite.spritecollide(self.player,self.__trap_group,False,pygame.sprite.collide_circle)
             if collision_trap:
-                self.player.life = 0
-
-
-    # def collision_between_player_and_enemy(self):
-    #     collision = pygame.sprite.spritecollide(self.player,self.enemies_group,False,pygame.sprite.collide_circle)
-    #     if collision:
-    #         self.player.death()
-
+                self.player.death()
+                
 
     def collision_between_the_player_and_the_enemys_bullet(self):
         if self.player.flag_life:
@@ -152,6 +158,8 @@ class Stage:
                 collisions = pygame.sprite.spritecollide(self.player,enemy.bullet_group,True,pygame.sprite.collide_circle)
                 if collisions:
                     self.player.death()
+                    if self.player.life < 0:
+                         self.__scream_sound.play()
         else:
             for enemy in self.__enemies_group:
                 pygame.sprite.spritecollide(self.player, enemy.bullet_group,False,pygame.sprite.collide_circle)
@@ -167,12 +175,10 @@ class Stage:
                 if enemy.flag_life == False:
                     self.__list_dead_enemies.append(enemy)
                     
-                if len(self.__list_dead_enemies) == len(self.__enemies_group):
-                    self.__flag_enemies_eliminate = True
-                    self.__list_dead_enemies = []
-        print(len(self.__enemies_group))
-        print(len(self.__list_dead_enemies))
-
+                    if len(self.__list_dead_enemies) == len(self.__enemies_group):
+                        self.__flag_enemies_eliminate = True
+                        self.__list_dead_enemies = []
+        
 
     def collision_between_the_player_and_the_platforms(self):
         for platform in self.__platform_group:
@@ -183,8 +189,7 @@ class Stage:
 
     
     def handle_collisions(self):
-        #self.collision_between_player_and_enemy()
-        #self.collision_between_the_player_and_the_enemys_bullet()
+        self.collision_between_the_player_and_the_enemys_bullet()
         self.collision_between_the_enemy_and_the_player_bullet()
         self.collision_between_player_and_life()
         self.collision_between_player_and_score()
