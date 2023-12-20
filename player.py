@@ -112,11 +112,7 @@ class Player(pygame.sprite.Sprite):
         return curent_time - self.__time_bullet >= self.__time_bullet_rate_ms
     
     def create_bullet(self):
-        if self.__direction == DIRECTION_R:
-            bullet_direction = DIRECTION_L
-        else:
-            bullet_direction = DIRECTION_R
-        bullet = Bullet(self.__rect.centerx, self.__rect.centery, bullet_direction, r"assets\graphics\player\bullet_player.png")
+        bullet = Bullet(self.__rect.centerx, self.__rect.centery, self.__direction, r"assets\graphics\player\bullet_player.png")
         return self.__bullet_group.add(bullet)
     
     def still(self):
@@ -190,7 +186,7 @@ class Player(pygame.sprite.Sprite):
             if teclas_presionadas[pygame.K_SPACE]:
                 self.jump()
             if teclas_presionadas[pygame.K_f] and not teclas_presionadas[pygame.K_LEFT] and not teclas_presionadas[pygame.K_RIGHT]:
-                #self.__disparo.play()
+                self.__disparo.play()
                 self.shoot()
 
 

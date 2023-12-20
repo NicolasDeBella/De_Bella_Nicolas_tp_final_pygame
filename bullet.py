@@ -25,9 +25,9 @@ class Bullet(pygame.sprite.Sprite):
     
     def update(self):
         if self.__direction == DIRECTION_L:
-            self.rect.x += self.__speed
-        elif self.__direction == DIRECTION_R:  
             self.rect.x -= self.__speed
+        elif self.__direction == DIRECTION_R:  
+            self.rect.x += self.__speed
         
         if self.rect.right < 0 or self.rect.left > WIDTH_WINDOW:
             self.kill()
